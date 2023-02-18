@@ -1,8 +1,10 @@
 import React from 'react';
+import { Flex, Heading } from '@chakra-ui/react'
+
 
 const AuthPage = () => {
     return (
-        <div></div>
+        <Flex direction="column" align="center"><Heading>platedate</Heading></Flex>
     )
 };
 
