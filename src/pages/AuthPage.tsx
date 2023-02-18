@@ -1,5 +1,4 @@
 import React, { useEffect } from 'react';
-import { Flex, Heading } from '@chakra-ui/react';
 import { supabase } from '../lib/api';
 import {
   Flex,
@@ -18,7 +17,6 @@ import {
 import plateImage from '../assets/plate.png';
 
 const AuthPage = () => {
-
   useEffect(() => {
     async function fetchHelloWorld() {
       try {
@@ -32,7 +30,7 @@ const AuthPage = () => {
     }
     fetchHelloWorld();
   }, []);
-  
+
   return (
     <Flex direction="column" align="center" justify="center" h="100vh" p="32px">
       <Image src={plateImage} alt="Noodles" h="120px" mb="24px" />

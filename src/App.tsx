@@ -8,8 +8,6 @@ import { createClient } from '@supabase/supabase-js';
 import { supabase } from './lib/api';
 
 function App({ idToken }: any) {
-
-
   return (
     <ChakraProvider theme={theme}>
       <AuthPage />
