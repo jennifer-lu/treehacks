@@ -1,13 +1,18 @@
-import React from 'react';
+import React, { useState } from 'react';
 import AuthPage from './pages/AuthPage';
 
-import { ChakraProvider } from '@chakra-ui/react'
+import { ChakraProvider } from '@chakra-ui/react';
 import theme from './theme/theme';
 
-function App() {
+import { createClient } from '@supabase/supabase-js';
+import { supabase } from './lib/api';
+
+function App({ idToken }: any) {
+
+
   return (
     <ChakraProvider theme={theme}>
-        <AuthPage />
+      <AuthPage />
     </ChakraProvider>
   );
 }
