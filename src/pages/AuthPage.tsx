@@ -1,22 +1,23 @@
-import React, { useEffect } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { supabase } from '../lib/api';
 import {
   Flex,
   Heading,
   FormControl,
   FormLabel,
-  FormErrorMessage,
-  FormHelperText,
   Input,
   Image,
-  Spacer,
   Card,
   Button,
   Text,
 } from '@chakra-ui/react';
 import plateImage from '../assets/plate.png';
 
+import AuthContext from '../contexts/AuthContext';
+
 const AuthPage = () => {
+  const { login } = useContext(AuthContext);
+
   useEffect(() => {
     async function fetchHelloWorld() {
       try {
@@ -55,10 +56,18 @@ const AuthPage = () => {
             <Input type="password" focusBorderColor="green.600" />
           </FormControl>
           <Flex mt="16px" gap="16px">
-            <Button variant="outline" colorScheme="green">
+            <Button
+              variant="outline"
+              colorScheme="green"
+              onClick={() => login('', '')}
+            >
               sign up
             </Button>
-            <Button variant="filled" colorScheme="green">
+            <Button
+              variant="filled"
+              colorScheme="green"
+              onClick={() => login('', '')}
+            >
               log in
             </Button>
           </Flex>

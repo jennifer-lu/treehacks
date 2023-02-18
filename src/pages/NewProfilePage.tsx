@@ -4,16 +4,11 @@ import {
   Heading,
   FormControl,
   FormLabel,
-  FormErrorMessage,
-  FormHelperText,
   Input,
-  Image,
-  Spacer,
   Card,
   Button,
   Text,
 } from '@chakra-ui/react';
-import plateImage from '../assets/plate.png';
 import Menu from '../components/Menu';
 import Select from 'react-select';
 
