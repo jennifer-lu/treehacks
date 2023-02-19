@@ -10,8 +10,14 @@ class DataService {
     this.prisma = new PrismaClient();
   }
 
-  private getSimilarityScore(): number {
-      
+  private getSimilarityScore(user1: number[], user2: number[]): number {
+    var score = 0;
+    user1.forEach((_, idx) => {
+      if (user1[idx] === user2[idx]) {
+        score += 1;
+      }
+    });
+    return score;
   }
 
   async loginUser(email: string, password: string): Promise<Boolean> {
@@ -44,16 +50,28 @@ class DataService {
       },
     });
 
-    var matches = []
+    var matches = [];
 
     for (var i = 0; i < preferences.length; i++) {
-        var maxIdx = i + 1
-        for (var j = i + 1; j < preferences.length; j++) {
-            if preferences[maxIdx].like_matrix.
+      var maxIdx = i + 1;
+      var maxSimilarlityScore = 0;
+      for (var j = i + 1; j < preferences.length; j++) {
+        const simScore = this.getSimilarityScore(
+          preferences[i].like_matrix,
+          preferences[j].like_matrix,
+        );
+        if (simScore > maxSimilarlityScore) {
+          maxIdx = j;
+          maxSimilarlityScore = simScore;
         }
+      }
+
+      matches.push([preferences[i].user_id, preferences[maxIdx].user_id]);
     }
 
+    await this.prisma.match.createMany({
+        data: 
+    })
+
   }
-
-
 }
