@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useState } from 'react';
 import {
   Flex,
   Heading,
@@ -20,14 +20,14 @@ const AuthPage = () => {
   // useEffect(() => {
   //   async function fetchBackend() {
   //     await fetch(`${url}/createPreference`, {
-  //       headers: {
-  //         'Content-Type': 'application/json',
-  //       },
-  //       method: 'POST',
-  //       body: JSON.stringify({
-  //         userID: 1,
-  //         prefs: [0, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-  //       }),
+  // headers: {
+  //   'Content-Type': 'application/json',
+  // },
+  // method: 'POST',
+  // body: JSON.stringify({
+  //   userID: 1,
+  //   prefs: [0, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+  // }),
   //     })
   //       .then((res) => res.json())
   //       .then(console.log)
@@ -38,14 +38,16 @@ const AuthPage = () => {
 
   // useEffect(() => {
   //   async function fetchBackend() {
-  //     await fetch('/login?mail=1&password=123')
-  //       .then((res) => res.json())
-  //       .then(console.log)
-  //       .catch((e) => console.log(e));
+  //   await fetch('/login?mail=1&password=123')
+  //     .then((res) => res.json())
+  //     .then(console.log)
+  //     .catch((e) => console.log(e));
   //   }
   //   fetchBackend();
   // }, []);
-  const { isAuthenticated, login } = useContext(AuthContext);
+  const { isAuthenticated, signup, login } = useContext(AuthContext);
+  const [email, setEmail] = useState<string>('');
+  const [password, setPassword] = useState<string>('');
 
   if (isAuthenticated) {
     return <Navigate to="/new" replace />;
@@ -68,24 +70,34 @@ const AuthPage = () => {
         >
           <FormControl>
             <FormLabel>email</FormLabel>
-            <Input type="email" focusBorderColor="green.600" />
+            <Input
+              type="email"
+              focusBorderColor="green.600"
+              value={email}
+              onChange={(event) => setEmail(event.target.value)}
+            />
           </FormControl>
           <FormControl>
             <FormLabel>password</FormLabel>
-            <Input type="password" focusBorderColor="green.600" />
+            <Input
+              type="password"
+              focusBorderColor="green.600"
+              value={password}
+              onChange={(event) => setPassword(event.target.value)}
+            />
           </FormControl>
           <Flex mt="16px" gap="16px">
             <Button
               variant="outline"
               colorScheme="green"
-              onClick={() => login('', '')}
+              onClick={() => signup(email, password)}
             >
               sign up
             </Button>
             <Button
               variant="filled"
               colorScheme="green"
-              onClick={() => login('', '')}
+              onClick={() => login(email, password)}
             >
               log in
             </Button>

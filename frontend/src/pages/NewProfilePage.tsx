@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useState } from 'react';
 import {
   Flex,
   Heading,
@@ -14,6 +14,8 @@ import Select from 'react-select';
 import { Navigate } from 'react-router-dom';
 import AuthContext from '../contexts/AuthContext';
 
+import { url } from '../url';
+
 const options = [
   { value: 'vegan', label: 'vegan' },
   { value: 'vegetarian', label: 'vegetarian' },
@@ -21,16 +23,37 @@ const options = [
 ];
 
 const NewProfilePage = () => {
-  const { isAuthenticated } = useContext(AuthContext);
-  const hasProfile = true;
+  const { isAuthenticated, userId } = useContext(AuthContext);
+
+  const [name, setName] = useState<string>('');
+  const [dietaryRestrictions, setDietaryRestrictions] = useState<string[]>([]);
+
+  const handleCreate = async () => {
+    await fetch(`${url}/newProfile`, {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      method: 'POST',
+      body: JSON.stringify({
+        userID: userId,
+        name,
+        dietaryRestrictions,
+      }),
+    })
+      .then(() => {
+        console.log('here');
+        <Navigate to="/match" replace />;
+      })
+      .catch((error) => {
+        console.warn(error);
+      });
+  };
 
   if (!isAuthenticated) {
     return <Navigate to="/auth" replace />;
   }
 
-  if (hasProfile) {
-    return <Navigate to="/prefs" replace />;
-  }
+  return <Navigate to="/prefs" replace />;
 
   return (
     <Flex direction="column" h="100vh">
@@ -50,7 +73,12 @@ const NewProfilePage = () => {
           >
             <FormControl>
               <FormLabel>name</FormLabel>
-              <Input type="email" focusBorderColor="green.600" />
+              <Input
+                type="email"
+                focusBorderColor="green.600"
+                value={name}
+                onChange={(event) => setName(event.target.value)}
+              />
             </FormControl>
             <FormControl>
               <FormLabel>phone number</FormLabel>
@@ -119,10 +147,16 @@ const NewProfilePage = () => {
                     color: '#2F855A',
                   }),
                 }}
+                // value={name}
+                onChange={(event) => console.log(event)}
               />
             </FormControl>
             <Flex mt="16px" gap="16px">
-              <Button variant="filled" colorScheme="green">
+              <Button
+                variant="filled"
+                colorScheme="green"
+                onClick={() => handleCreate()}
+              >
                 create
               </Button>
             </Flex>

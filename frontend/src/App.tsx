@@ -17,25 +17,52 @@ function App({ idToken }: any) {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(
     localStorage.getItem("isAuthenticated") === "true"
   );
+  const [userId, setUserId] = useState<number>(-1);
 
-  const login = async (password: string, username: string) => {
-    const res = await fetch(
-      `${url}/login?mail=${username}&password=${password}`
-    );
+  const signup = async (email: string, password: string) => {
+    const res = await fetch(`${url}/signup`, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+      method: "POST",
+      body: JSON.stringify({
+        email,
+        password,
+      }),
+    });
     const json = await res.json();
-    console.log("the response", json);
+    setUserId(json.id);
+    setIsAuthenticated(true);
+  };
 
+  const login = async (email: string, password: string) => {
+    console.log(email, password);
+    const res = await fetch(`${url}/login`, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+      method: "POST",
+      body: JSON.stringify({
+        email,
+        password,
+      }),
+    });
+    const json = await res.json();
+    setUserId(json.id);
     setIsAuthenticated(true);
   };
 
   const logout = () => {
     localStorage.setItem("isAuthenticated", "false");
+    setUserId(-1);
     setIsAuthenticated(false);
   };
 
   return (
     <ChakraProvider theme={theme}>
-      <AuthContext.Provider value={{ isAuthenticated, login, logout }}>
+      <AuthContext.Provider
+        value={{ isAuthenticated, userId, signup, login, logout }}
+      >
         <BrowserRouter>
           <Routes>
             <Route path="/auth" element={<AuthPage />} />

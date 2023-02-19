@@ -16,9 +16,13 @@ import { Navigate } from 'react-router-dom';
 import AuthContext from '../contexts/AuthContext';
 import Menu from '../components/Menu';
 
+import { url } from '../url';
+
 interface PrefSelectionProps {
   index: number;
   incrementIndex: () => void;
+  prefs: number[];
+  setPrefs: (prefs: number[]) => void;
 }
 
 const foods = [
@@ -37,11 +41,9 @@ const foods = [
 export const PrefSelection = ({
   index,
   incrementIndex,
+  prefs,
+  setPrefs,
 }: PrefSelectionProps) => {
-  const { isAuthenticated } = useContext(AuthContext);
-
-  const [prefs, setPrefs] = useState<number[]>([]);
-
   const indicateLike = () => {
     setPrefs([...prefs, 1]);
     incrementIndex();
@@ -51,10 +53,6 @@ export const PrefSelection = ({
     setPrefs([...prefs, 0]);
     incrementIndex();
   };
-
-  if (!isAuthenticated) {
-    return <Navigate to="/auth" replace />;
-  }
 
   return (
     <Flex direction="column" align="center" justify="center" gap="32px">
@@ -73,15 +71,38 @@ export const PrefSelection = ({
 };
 
 export const PrefSelectionPage = () => {
+  const { isAuthenticated, userId } = useContext(AuthContext);
+
   const [index, setIndex] = useState(0);
+  const [prefs, setPrefs] = useState<number[]>([]);
   const hasPrefs = false;
 
   const incrementIndex = () => {
     setIndex(index + 1);
   };
 
-  if (hasPrefs) {
-    return <Navigate to="/match" replace />;
+  const handleSubmit = async () => {
+    await fetch(`${url}/createPreference`, {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      method: 'POST',
+      body: JSON.stringify({
+        userID: userId,
+        prefs,
+      }),
+    })
+      .then(() => {
+        console.log('here');
+        return <Navigate to="/match" replace />;
+      })
+      .catch((error) => {
+        console.warn(error);
+      });
+  };
+
+  if (!isAuthenticated) {
+    return <Navigate to="/auth" replace />;
   }
 
   return (
@@ -93,11 +114,18 @@ export const PrefSelectionPage = () => {
           preferences
         </Heading>
         {index < foods.length ? (
-          <PrefSelection index={index} incrementIndex={incrementIndex} />
+          <PrefSelection
+            index={index}
+            incrementIndex={incrementIndex}
+            prefs={prefs}
+            setPrefs={setPrefs}
+          />
         ) : (
           <Flex direction="column" align="center" justify="center" gap="32px">
             <Text>thank you for indicating your preferences!</Text>
-            <Button variant="outline">submit</Button>
+            <Button variant="outline" onClick={() => handleSubmit()}>
+              submit
+            </Button>
           </Flex>
         )}
       </Flex>
