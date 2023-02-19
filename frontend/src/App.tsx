@@ -1,31 +1,29 @@
-import React, { useState } from 'react';
-import { ChakraProvider } from '@chakra-ui/react';
+import React, { useState } from "react";
+import { ChakraProvider } from "@chakra-ui/react";
 
-import AuthPage from './pages/AuthPage';
-import NewProfilePage from './pages/NewProfilePage';
+import { Route } from "react-router";
+import { BrowserRouter, Routes, Navigate } from "react-router-dom";
 
-import theme from './theme/theme';
+import theme from "./theme/theme";
+import AuthContext from "./contexts/AuthContext";
 
-import AuthContext from './contexts/AuthContext';
-
-import { Route } from 'react-router';
-
-import { BrowserRouter, Routes, Navigate } from 'react-router-dom';
-
-import MatchPage from './pages/MatchPage';
+import AuthPage from "./pages/AuthPage";
+import NewProfilePage from "./pages/NewProfilePage";
+import MatchPage from "./pages/MatchPage";
+import { PrefSelectionPage } from "./pages/PrefSelectionPage";
 
 function App({ idToken }: any) {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(
-    localStorage.getItem('isAuthenticated') === 'true',
+    localStorage.getItem("isAuthenticated") === "true"
   );
 
   const login = (password: string, username: string) => {
-    localStorage.setItem('isAuthenticated', 'true');
+    localStorage.setItem("isAuthenticated", "true");
     setIsAuthenticated(true);
   };
 
   const logout = () => {
-    localStorage.setItem('isAuthenticated', 'false');
+    localStorage.setItem("isAuthenticated", "false");
     setIsAuthenticated(false);
   };
 
@@ -36,6 +34,7 @@ function App({ idToken }: any) {
           <Routes>
             <Route path="/auth" element={<AuthPage />} />
             <Route path="/new" element={<NewProfilePage />} />
+            <Route path="/prefs" element={<PrefSelectionPage />} />
             <Route path="/match" element={<MatchPage />} />
             <Route path="*" element={<Navigate to="/auth" replace />} />
           </Routes>

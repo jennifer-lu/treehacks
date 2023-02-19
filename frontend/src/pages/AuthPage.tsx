@@ -12,8 +12,8 @@ import {
 } from '@chakra-ui/react';
 import plateImage from '../assets/plate.png';
 
-import AuthContext from '../contexts/AuthContext';
 import { Navigate } from 'react-router-dom';
+import AuthContext from '../contexts/AuthContext';
 
 const AuthPage = () => {
   const { isAuthenticated, login } = useContext(AuthContext);
@@ -46,10 +46,18 @@ const AuthPage = () => {
             <Input type="password" focusBorderColor="green.600" />
           </FormControl>
           <Flex mt="16px" gap="16px">
-            <Button variant="outline" colorScheme="green">
+            <Button
+              variant="outline"
+              colorScheme="green"
+              onClick={() => login('', '')}
+            >
               sign up
             </Button>
-            <Button variant="filled" colorScheme="green">
+            <Button
+              variant="filled"
+              colorScheme="green"
+              onClick={() => login('', '')}
+            >
               log in
             </Button>
           </Flex>

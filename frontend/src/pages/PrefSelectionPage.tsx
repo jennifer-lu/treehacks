@@ -1,5 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { Flex, Heading, Image, Button, Text, Card } from '@chakra-ui/react';
+
+import { Navigate } from 'react-router-dom';
+import AuthContext from '../contexts/AuthContext';
 
 interface PrefSelectionProps {
   index: number;
@@ -21,6 +24,8 @@ export const PrefSelection = ({
   index,
   incrementIndex,
 }: PrefSelectionProps) => {
+  const { isAuthenticated } = useContext(AuthContext);
+
   const [prefs, setPrefs] = useState<number[]>([]);
 
   const indicateLike = () => {
@@ -32,6 +37,10 @@ export const PrefSelection = ({
     setPrefs([...prefs, 0]);
     incrementIndex();
   };
+
+  if (!isAuthenticated) {
+    return <Navigate to="/auth" replace />;
+  }
 
   return (
     <Card>
