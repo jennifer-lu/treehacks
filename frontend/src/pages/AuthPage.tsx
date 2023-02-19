@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import {
   Flex,
   Heading,
@@ -16,6 +16,31 @@ import { Navigate } from 'react-router-dom';
 import AuthContext from '../contexts/AuthContext';
 
 const AuthPage = () => {
+  // useEffect(() => {
+  //   async function fetchBackend() {
+  //     await fetch('/createPreference', {
+  //       headers: {
+  //         "Content-Type": "application/json"
+  //       },
+  //       method: "POST",
+  //       body: JSON.stringify({userID: "1", prefs: [0, 1, 1, 1, 1, 1, 1, 1, 1, 1]})
+  //     })
+  //       .then(res =>res.json())
+  //       .then(console.log)
+  //       .catch(e => console.log(e))
+  //   }
+  //   fetchBackend();
+  // }, [])
+
+  useEffect(() => {
+    async function fetchBackend() {
+      await fetch('/login?mail=1&password=123')
+        .then(res =>res.json())
+        .then(console.log)
+        .catch(e => console.log(e))
+    }
+    fetchBackend();
+  }, [])
   const { isAuthenticated, login } = useContext(AuthContext);
 
   if (isAuthenticated) {

@@ -2,6 +2,7 @@ import cookieParser from 'cookie-parser';
 import cors from 'cors';
 import express, { Express, Request, Response } from 'express';
 import { Prisma, PrismaClient } from '@prisma/client';
+import { dataService } from './data.js'
 
 const prisma = new PrismaClient();
 const CORS_ALLOW_LIST = ['http://localhost:3000'];
@@ -23,26 +24,49 @@ app.get('/hi', (req: Request, res: Response) => {
 
 // create user
 app.get('/login', async (req: Request, res: Response) => {
-  const { email, password } = req.body;
+  const { mail, password} = req.params;
   try {
-    const user = await prisma.user.findUnique({
-      where: { email },
+    const user = await prisma.user.findFirst({
+      where: { email: mail },
       select: { id: true, password: true },
     });
 
-    if (user.password !== password) {
+    if (user?.password !== password) {
       return res.status(401).json({ error: 'Invalid Password' });
     }
-    res.json({ userId: user.id });
+    res.json({ userId: user?.id });
   } catch (e) {
     res
       .status(500)
-      .json({ error: `User with email ${email} does not exist in database` });
+      .json({ error: `User with email ${mail} does not exist in database` });
   }
 });
 
-//
-app.post('/signup', async (req: Request, res: Response) => {});
+app.post('/signup', async (req: Request, res: Response) => {
+  const { id, name, email, password, dietary_restrictions } = req.body;
+  const result = await prisma.user.create({
+    data: {
+      id,
+      name,
+      email,
+      password,
+      dietary_restrictions
+    },
+  })
+  res.json(result)
+});
+
+app.post('/createPreference', async (req: Request, res: Response) => {
+  const { userID, prefs } = req.body;
+  const post = await dataService.createPreferences(userID, prefs);
+  console.log(post)
+  res.json(post);
+});
+
+// app.get('/getMatch', async (req: Request, res: Response) => {
+//   const { userID } = req.body;
+//   const match = dataService.getMatch(userID)
+// })
 
 app.listen({ port: 5050 }, () => {
   /* eslint-disable-next-line no-console */

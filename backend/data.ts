@@ -35,11 +35,13 @@ class DataService {
   }
 
   async createPreferences(userID: number, prefs: [number]) {
-    return await this.prisma.preference.upsert({
+    console.log(userID, prefs);
+    const preference = await this.prisma.preference.upsert({
       where: { user_id: userID },
       update: { like_matrix: prefs },
       create: { user_id: userID, like_matrix: prefs },
-    });
+    })
+    return preference;
   }
 
   async generateAllMatches() {
@@ -69,9 +71,29 @@ class DataService {
       matches.push([preferences[i].user_id, preferences[maxIdx].user_id]);
     }
 
-    await this.prisma.match.createMany({
-        data: 
-    })
+    // await this.prisma.match.createMany({
+    //     data: 
+    // })
 
   }
+
+  async getMatch(uid: number) {
+    const matchData = await this.prisma.match.findFirst({
+      where: {
+        user_id: uid,
+      },
+    });
+
+    const userData = await this.prisma.match.findFirst({
+      where: {
+        match_id: matchData?.match_id,
+        user_id: {
+          not: uid,
+        }
+      },
+    })
+  }
 }
+
+const dataService: DataService = new DataService();
+export { dataService };
