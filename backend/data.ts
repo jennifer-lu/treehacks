@@ -55,7 +55,7 @@ export class DataService {
     var matches = [];
 
     for (var i = 0; i < preferences.length; i++) {
-      var maxIdx = i + 1;
+      var maxIdx = i;
       var maxSimilarlityScore = 0;
       for (var j = i + 1; j < preferences.length; j++) {
         const simScore = this.getSimilarityScore(
