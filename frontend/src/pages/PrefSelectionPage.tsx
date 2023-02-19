@@ -2,7 +2,9 @@ import React, { useContext, useState } from 'react';
 import { Flex, Heading, Image, Button, Text, Card } from '@chakra-ui/react';
 
 import { Navigate } from 'react-router-dom';
+
 import AuthContext from '../contexts/AuthContext';
+import Menu from '../components/Menu';
 
 interface PrefSelectionProps {
   index: number;
@@ -61,16 +63,25 @@ export const PrefSelectionPage = () => {
   };
 
   return (
-    <Flex direction="column" align="center" justify="center" h="100vh" p="32px">
-      <Heading>Food Preferences</Heading>
-      {index < foodNames.length ? (
-        <PrefSelection index={index} incrementIndex={incrementIndex} />
-      ) : (
-        <div>
-          <Text>Thank you for indicating your preferences!</Text>
-          <Button>Submit Preferences</Button>
-        </div>
-      )}
+    <Flex direction="column">
+      <Menu />
+      <Flex
+        direction="column"
+        align="center"
+        justify="center"
+        h="100vh"
+        p="32px"
+      >
+        <Heading>Food Preferences</Heading>
+        {index < foodNames.length ? (
+          <PrefSelection index={index} incrementIndex={incrementIndex} />
+        ) : (
+          <div>
+            <Text>Thank you for indicating your preferences!</Text>
+            <Button>Submit Preferences</Button>
+          </div>
+        )}
+      </Flex>
     </Flex>
   );
 };

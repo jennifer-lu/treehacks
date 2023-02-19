@@ -34,7 +34,7 @@ const NewProfilePage = () => {
 
   return (
     <Flex direction="column">
-      <Menu></Menu>
+      <Menu />
       <Flex direction="column" align="center" h="100vh" p="32px">
         <Text>create your</Text>
         <Heading size="2xl" mb="32px">
