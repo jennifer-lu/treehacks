@@ -18,17 +18,12 @@ import plateImage from '../assets/plate.png';
 
 const AuthPage = () => {
   useEffect(() => {
-    async function fetchHelloWorld() {
-      try {
-        const { data, error } = await supabase.functions.invoke('hello-world', {
-          body: { name: 'Functions' },
-        });
-        console.log(data);
-      } catch (e) {
-        console.log(e);
-      }
+    async function fetchBackend() {
+      await fetch('/hi')
+        .then((res) => res.json())
+        .then(console.log);
     }
-    fetchHelloWorld();
+    fetchBackend();
   }, []);
 
   return (
