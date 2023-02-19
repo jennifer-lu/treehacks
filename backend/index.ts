@@ -1,11 +1,11 @@
-import cookieParser from 'cookie-parser';
-import cors from 'cors';
-import express, { Express, Request, Response } from 'express';
-import { Prisma, PrismaClient } from '@prisma/client';
-import { dataService } from './data.js'
+import cookieParser from "cookie-parser";
+import cors from "cors";
+import express, { Express, Request, Response } from "express";
+import { Prisma, PrismaClient } from "@prisma/client";
+import { dataService } from "./data.js";
 
 const prisma = new PrismaClient();
-const CORS_ALLOW_LIST = ['http://localhost:3000'];
+const CORS_ALLOW_LIST = ["http://localhost:3000"];
 
 const CORS_OPTIONS = {
   origin: CORS_ALLOW_LIST,
@@ -18,13 +18,14 @@ app.use(cors(CORS_OPTIONS));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.get('/hi', (req: Request, res: Response) => {
-  res.json('Hello World');
+app.get("/hi", (req: Request, res: Response) => {
+  res.json("Hello World");
 });
 
 // create user
-app.get('/login', async (req: Request, res: Response) => {
-  const { mail, password} = req.params;
+app.get("/login", async (req: Request, res: Response) => {
+  const { mail, password } = req.params;
+  console.log("hit login", req.params);
   try {
     const user = await prisma.user.findFirst({
       where: { email: mail },
@@ -32,7 +33,7 @@ app.get('/login', async (req: Request, res: Response) => {
     });
 
     if (user?.password !== password) {
-      return res.status(401).json({ error: 'Invalid Password' });
+      return res.status(401).json({ error: "Invalid Password" });
     }
     res.json({ userId: user?.id });
   } catch (e) {
@@ -42,7 +43,7 @@ app.get('/login', async (req: Request, res: Response) => {
   }
 });
 
-app.post('/signup', async (req: Request, res: Response) => {
+app.post("/signup", async (req: Request, res: Response) => {
   const { id, name, email, password, dietary_restrictions } = req.body;
   const result = await prisma.user.create({
     data: {
@@ -50,23 +51,24 @@ app.post('/signup', async (req: Request, res: Response) => {
       name,
       email,
       password,
-      dietary_restrictions
+      dietary_restrictions,
     },
-  })
-  res.json(result)
+  });
+  res.json(result);
 });
 
-app.post('/createPreference', async (req: Request, res: Response) => {
+app.post("/createPreference", async (req: Request, res: Response) => {
+  console.log("endpoint hit");
   const { userID, prefs } = req.body;
   const post = await dataService.createPreferences(userID, prefs);
-  console.log(post)
+  console.log(post);
   res.json(post);
 });
 
-// app.get('/getMatch', async (req: Request, res: Response) => {
-//   const { userID } = req.body;
-//   const match = dataService.getMatch(userID)
-// })
+app.get("/getMatch", async (req: Request, res: Response) => {
+  const { userID } = req.body;
+  const match = dataService.getMatch(userID);
+});
 
 app.listen({ port: 5050 }, () => {
   /* eslint-disable-next-line no-console */

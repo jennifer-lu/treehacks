@@ -7,8 +7,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-import { PrismaClient } from '@prisma/client';
-class DataService {
+import { PrismaClient } from "@prisma/client";
+export class DataService {
     constructor() {
         this.prisma = new PrismaClient();
     }
@@ -64,11 +64,19 @@ class DataService {
                         maxSimilarlityScore = simScore;
                     }
                 }
-                matches.push([preferences[i].user_id, preferences[maxIdx].user_id]);
+                matches.push({
+                    match_id: i,
+                    user_id: preferences[maxIdx].user_id,
+                });
+                matches.push({
+                    match_id: i,
+                    user_id: preferences[i].user_id,
+                });
             }
-            // await this.prisma.match.createMany({
-            //     data: 
-            // })
+            yield this.prisma.match.createMany({
+                data: matches,
+                skipDuplicates: false,
+            });
         });
     }
     getMatch(uid) {
@@ -83,9 +91,13 @@ class DataService {
                     match_id: matchData === null || matchData === void 0 ? void 0 : matchData.match_id,
                     user_id: {
                         not: uid,
-                    }
+                    },
                 },
             });
+            const UserInfo = yield this.prisma.user.findFirst({
+                where: { id: userData === null || userData === void 0 ? void 0 : userData.user_id },
+            });
+            return UserInfo;
         });
     }
 }

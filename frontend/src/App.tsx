@@ -11,14 +11,20 @@ import AuthPage from "./pages/AuthPage";
 import NewProfilePage from "./pages/NewProfilePage";
 import MatchPage from "./pages/MatchPage";
 import { PrefSelectionPage } from "./pages/PrefSelectionPage";
+import { url } from "./url";
 
 function App({ idToken }: any) {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(
     localStorage.getItem("isAuthenticated") === "true"
   );
 
-  const login = (password: string, username: string) => {
-    localStorage.setItem("isAuthenticated", "true");
+  const login = async (password: string, username: string) => {
+    const res = await fetch(
+      `${url}/login?mail=${username}&password=${password}`
+    );
+    const json = await res.json();
+    console.log("the response", json);
+
     setIsAuthenticated(true);
   };
 

@@ -14,33 +14,37 @@ import plateImage from '../assets/plate.png';
 
 import { Navigate } from 'react-router-dom';
 import AuthContext from '../contexts/AuthContext';
+import { url } from '../url';
 
 const AuthPage = () => {
   // useEffect(() => {
   //   async function fetchBackend() {
-  //     await fetch('/createPreference', {
+  //     await fetch(`${url}/createPreference`, {
   //       headers: {
-  //         "Content-Type": "application/json"
+  //         'Content-Type': 'application/json',
   //       },
-  //       method: "POST",
-  //       body: JSON.stringify({userID: "1", prefs: [0, 1, 1, 1, 1, 1, 1, 1, 1, 1]})
+  //       method: 'POST',
+  //       body: JSON.stringify({
+  //         userID: 1,
+  //         prefs: [0, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+  //       }),
   //     })
-  //       .then(res =>res.json())
+  //       .then((res) => res.json())
   //       .then(console.log)
-  //       .catch(e => console.log(e))
+  //       .catch((e) => console.log(e));
   //   }
   //   fetchBackend();
-  // }, [])
+  // }, []);
 
-  useEffect(() => {
-    async function fetchBackend() {
-      await fetch('/login?mail=1&password=123')
-        .then(res =>res.json())
-        .then(console.log)
-        .catch(e => console.log(e))
-    }
-    fetchBackend();
-  }, [])
+  // useEffect(() => {
+  //   async function fetchBackend() {
+  //     await fetch('/login?mail=1&password=123')
+  //       .then((res) => res.json())
+  //       .then(console.log)
+  //       .catch((e) => console.log(e));
+  //   }
+  //   fetchBackend();
+  // }, []);
   const { isAuthenticated, login } = useContext(AuthContext);
 
   if (isAuthenticated) {

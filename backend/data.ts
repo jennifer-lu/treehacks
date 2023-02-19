@@ -1,6 +1,6 @@
-import { PrismaClient, Prisma } from '@prisma/client';
+import { PrismaClient, Prisma } from "@prisma/client";
 
-class DataService {
+export class DataService {
   prisma: PrismaClient<
     Prisma.PrismaClientOptions,
     never,
@@ -40,7 +40,7 @@ class DataService {
       where: { user_id: userID },
       update: { like_matrix: prefs },
       create: { user_id: userID, like_matrix: prefs },
-    })
+    });
     return preference;
   }
 
@@ -60,7 +60,7 @@ class DataService {
       for (var j = i + 1; j < preferences.length; j++) {
         const simScore = this.getSimilarityScore(
           preferences[i].like_matrix,
-          preferences[j].like_matrix,
+          preferences[j].like_matrix
         );
         if (simScore > maxSimilarlityScore) {
           maxIdx = j;
@@ -68,13 +68,21 @@ class DataService {
         }
       }
 
-      matches.push([preferences[i].user_id, preferences[maxIdx].user_id]);
+      matches.push({
+        match_id: i,
+        user_id: preferences[maxIdx].user_id,
+      });
+
+      matches.push({
+        match_id: i,
+        user_id: preferences[i].user_id,
+      });
     }
 
-    // await this.prisma.match.createMany({
-    //     data: 
-    // })
-
+    await this.prisma.match.createMany({
+      data: matches,
+      skipDuplicates: false,
+    });
   }
 
   async getMatch(uid: number) {
@@ -89,9 +97,15 @@ class DataService {
         match_id: matchData?.match_id,
         user_id: {
           not: uid,
-        }
+        },
       },
-    })
+    });
+
+    const UserInfo = await this.prisma.user.findFirst({
+      where: { id: userData?.user_id },
+    });
+
+    return UserInfo;
   }
 }
 
