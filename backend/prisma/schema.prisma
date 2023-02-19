@@ -1,0 +1,29 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id                   Int      @id @default(autoincrement())
+  name                 String   @db.VarChar(255)
+  email                String   @db.VarChar(255)
+  password             String   @db.VarChar(255)
+  dietary_restrictions String[] @default([])
+}
+
+model Preference {
+  user_id     Int   @id @db.Integer
+  like_matrix Int[] @default([0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
+}
+
+model Match {
+  match_id Int @id
+  user_id  Int @db.Integer
+}

@@ -1,30 +1,26 @@
-import React, { useEffect } from 'react';
-import { supabase } from '../lib/api';
+import React, { useContext } from 'react';
 import {
   Flex,
   Heading,
   FormControl,
   FormLabel,
-  FormErrorMessage,
-  FormHelperText,
   Input,
   Image,
-  Spacer,
   Card,
   Button,
   Text,
 } from '@chakra-ui/react';
 import plateImage from '../assets/plate.png';
 
+import AuthContext from '../contexts/AuthContext';
+import { Navigate } from 'react-router-dom';
+
 const AuthPage = () => {
-  useEffect(() => {
-    async function fetchBackend() {
-      await fetch('/hi')
-        .then((res) => res.json())
-        .then(console.log);
-    }
-    fetchBackend();
-  }, []);
+  const { isAuthenticated, login } = useContext(AuthContext);
+
+  if (isAuthenticated) {
+    return <Navigate to="/new" replace />;
+  }
 
   return (
     <Flex direction="column" align="center" justify="center" h="100vh" p="32px">

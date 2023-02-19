@@ -14,7 +14,7 @@ app.use(express.urlencoded({ extended: true }));
 app.get('/hi', (req, res) => {
     res.json('Hello World');
 });
-app.listen({ port: 5000 }, () => {
+app.listen({ port: 5050 }, () => {
     /* eslint-disable-next-line no-console */
-    console.info(`Server is listening on port 5000}!`);
+    console.info(`Server is listening on port 5050}!`);
 });

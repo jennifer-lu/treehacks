@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext, useEffect } from 'react';
 import {
   Flex,
   Heading,
@@ -11,6 +11,8 @@ import {
 } from '@chakra-ui/react';
 import Menu from '../components/Menu';
 import Select from 'react-select';
+import { Navigate } from 'react-router-dom';
+import AuthContext from '../contexts/AuthContext';
 
 const options = [
   { value: 'vegan', label: 'vegan' },
@@ -19,6 +21,17 @@ const options = [
 ];
 
 const NewProfilePage = () => {
+  const { isAuthenticated } = useContext(AuthContext);
+  const hasProfile = true;
+
+  if (!isAuthenticated) {
+    return <Navigate to="/auth" replace />;
+  }
+
+  if (hasProfile) {
+    return <Navigate to="/match" replace />;
+  }
+
   return (
     <Flex direction="column">
       <Menu></Menu>

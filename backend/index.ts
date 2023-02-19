@@ -42,10 +42,9 @@ app.get('/login', async (req: Request, res: Response) => {
 });
 
 //
-app.post('/signup', async (req: Request, res: Response) => {
-  
-});
-app.app.listen({ port: 5000 }, () => {
+app.post('/signup', async (req: Request, res: Response) => {});
+
+app.listen({ port: 5050 }, () => {
   /* eslint-disable-next-line no-console */
-  console.info(`Server is listening on port 5000}!`);
+  console.info(`Server is listening on port 5050}!`);
 });
