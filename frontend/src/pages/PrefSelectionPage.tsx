@@ -75,31 +75,19 @@ export const PrefSelectionPage = () => {
 
   const [index, setIndex] = useState(0);
   const [prefs, setPrefs] = useState<number[]>([]);
-  const hasPrefs = false;
+  const [cont, setCont] = useState<boolean>(false);
 
   const incrementIndex = () => {
     setIndex(index + 1);
   };
 
-  const handleSubmit = async () => {
-    await fetch(`${url}/createPreference`, {
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      method: 'POST',
-      body: JSON.stringify({
-        userID: userId,
-        prefs,
-      }),
-    })
-      .then(() => {
-        console.log('here');
-        return <Navigate to="/match" replace />;
-      })
-      .catch((error) => {
-        console.warn(error);
-      });
+  const handleSubmit = () => {
+    setCont(true);
   };
+
+  if (cont) {
+    return <Navigate to="/match" replace />;
+  }
 
   if (!isAuthenticated) {
     return <Navigate to="/auth" replace />;

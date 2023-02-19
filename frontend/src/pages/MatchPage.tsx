@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useState } from 'react';
 import {
   Flex,
   Heading,
@@ -23,6 +23,7 @@ const options = [
 
 const MatchPage = () => {
   const { isAuthenticated } = useContext(AuthContext);
+  const [confirmed, setConfirmed] = useState<boolean>(false);
 
   if (!isAuthenticated) {
     return <Navigate to="/auth" replace />;
@@ -32,9 +33,9 @@ const MatchPage = () => {
     <Flex direction="column" h="100vh">
       <Menu />
       <Flex direction="column" align="center" p="32px">
-        <Text>you&rsquo;ve been</Text>
+        <Text>{confirmed ? "you're" : "you've been"}</Text>
         <Heading size="2xl" mb="32px">
-          matched
+          {confirmed ? 'confirmed' : 'matched'}
         </Heading>
         <Card variant="outline" width="100%">
           <Flex
@@ -44,19 +45,30 @@ const MatchPage = () => {
             p="32px"
             gap="16px"
           >
-            <Text>name: </Text>
-            <Text>phone number: </Text>
-            <Text>instagram: </Text>
-            <Text>dietary restrictions: </Text>
-            <Text>location: </Text>
-            <Text>time: </Text>
+            <Text>name: Bob</Text>
+            <Text>phone number: 123-456-7890</Text>
+            <Text>instagram: bobofficial</Text>
+            <Text>dietary restrictions: vegan</Text>
+            <Text>location: Lazeez</Text>
+            <Text>time: Feb 23</Text>
             <Flex mt="16px" gap="16px">
-              <Button variant="outline" colorScheme="green">
-                cancel
-              </Button>
-              <Button variant="filled" colorScheme="green">
-                confirm
-              </Button>
+              {confirmed ? (
+                <Button
+                  variant="outline"
+                  colorScheme="green"
+                  onClick={() => setConfirmed(false)}
+                >
+                  cancel
+                </Button>
+              ) : (
+                <Button
+                  variant="filled"
+                  colorScheme="green"
+                  onClick={() => setConfirmed(true)}
+                >
+                  confirm
+                </Button>
+              )}
             </Flex>
           </Flex>
         </Card>

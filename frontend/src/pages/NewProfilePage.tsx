@@ -27,33 +27,19 @@ const NewProfilePage = () => {
 
   const [name, setName] = useState<string>('');
   const [dietaryRestrictions, setDietaryRestrictions] = useState<string[]>([]);
+  const [cont, setCont] = useState<boolean>(false);
 
-  const handleCreate = async () => {
-    await fetch(`${url}/newProfile`, {
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      method: 'POST',
-      body: JSON.stringify({
-        userID: userId,
-        name,
-        dietaryRestrictions,
-      }),
-    })
-      .then(() => {
-        console.log('here');
-        <Navigate to="/match" replace />;
-      })
-      .catch((error) => {
-        console.warn(error);
-      });
+  const handleCreate = () => {
+    setCont(true);
   };
 
   if (!isAuthenticated) {
     return <Navigate to="/auth" replace />;
   }
 
-  return <Navigate to="/prefs" replace />;
+  if (cont) {
+    return <Navigate to="/prefs" replace />;
+  }
 
   return (
     <Flex direction="column" h="100vh">
