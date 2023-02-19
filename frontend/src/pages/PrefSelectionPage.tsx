@@ -1,5 +1,15 @@
 import React, { useContext, useState } from 'react';
-import { Flex, Heading, Image, Button, Text, Card } from '@chakra-ui/react';
+import { Flex, Heading, Image, Button, Text } from '@chakra-ui/react';
+import kebabImage from '../assets/kebab.png';
+import ramenImage from '../assets/ramen.png';
+import olivesImage from '../assets/olives.png';
+import saladImage from '../assets/salad.png';
+import curryImage from '../assets/curry.png';
+import shawarmaImage from '../assets/shawarma.png';
+import dumplingsImage from '../assets/dumplings.png';
+import burgerImage from '../assets/burger.png';
+import poutineImage from '../assets/poutine.png';
+import icecreamImage from '../assets/icecream.png';
 
 import { Navigate } from 'react-router-dom';
 
@@ -11,15 +21,17 @@ interface PrefSelectionProps {
   incrementIndex: () => void;
 }
 
-const foodNames = [
-  'kebab, ramen, olives',
-  'salad',
-  'curry',
-  'shawarma',
-  'sushi',
-  'fish n chips',
-  'poutine',
-  'beer',
+const foods = [
+  { name: 'kebab', image: kebabImage },
+  { name: 'ramen', image: ramenImage },
+  { name: 'olives', image: olivesImage },
+  { name: 'salad', image: saladImage },
+  { name: 'curry', image: curryImage },
+  { name: 'shawarma', image: shawarmaImage },
+  { name: 'dumplings', image: dumplingsImage },
+  { name: 'burger', image: burgerImage },
+  { name: 'poutine', image: poutineImage },
+  { name: 'icecream', image: icecreamImage },
 ];
 
 export const PrefSelection = ({
@@ -45,41 +57,48 @@ export const PrefSelection = ({
   }
 
   return (
-    <Card>
-      <Text>{foodNames[index]}</Text>
-      <Flex direction="row" justify="center">
-        <Button onClick={indicateLike}>Like</Button>
-        <Button onClick={indicateDislike}>Dislike</Button>
+    <Flex direction="column" align="center" justify="center" gap="32px">
+      <Text>{foods[index].name}</Text>
+      <Image src={foods[index].image} height="100px" />
+      <Flex gap="16px">
+        <Button variant="outline" onClick={indicateDislike}>
+          dislike
+        </Button>
+        <Button variant="filled" onClick={indicateLike}>
+          like
+        </Button>
       </Flex>
-    </Card>
+    </Flex>
   );
 };
 
 export const PrefSelectionPage = () => {
   const [index, setIndex] = useState(0);
+  const hasPrefs = false;
 
   const incrementIndex = () => {
     setIndex(index + 1);
   };
 
+  if (hasPrefs) {
+    return <Navigate to="/match" replace />;
+  }
+
   return (
-    <Flex direction="column">
+    <Flex direction="column" h="100vh">
       <Menu />
-      <Flex
-        direction="column"
-        align="center"
-        justify="center"
-        h="100vh"
-        p="32px"
-      >
-        <Heading>Food Preferences</Heading>
-        {index < foodNames.length ? (
+      <Flex direction="column" align="center" justify="center" p="32px">
+        <Text>select your</Text>
+        <Heading size="2xl" mb="32px">
+          preferences
+        </Heading>
+        {index < foods.length ? (
           <PrefSelection index={index} incrementIndex={incrementIndex} />
         ) : (
-          <div>
-            <Text>Thank you for indicating your preferences!</Text>
-            <Button>Submit Preferences</Button>
-          </div>
+          <Flex direction="column" align="center" justify="center" gap="32px">
+            <Text>thank you for indicating your preferences!</Text>
+            <Button variant="outline">submit</Button>
+          </Flex>
         )}
       </Flex>
     </Flex>
