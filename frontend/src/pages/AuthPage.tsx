@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useContext } from 'react';
 import {
   Flex,
   Heading,
@@ -15,7 +15,16 @@ import {
 } from '@chakra-ui/react';
 import plateImage from '../assets/plate.png';
 
+import AuthContext from '../contexts/AuthContext';
+import { Navigate } from 'react-router-dom';
+
 const AuthPage = () => {
+  const { isAuthenticated, login } = useContext(AuthContext);
+
+  if (isAuthenticated) {
+    return <Navigate to="/new" replace />;
+  }
+
   return (
     <Flex direction="column" align="center" justify="center" h="100vh" p="32px">
       <Image src={plateImage} alt="Noodles" h="120px" mb="24px" />
