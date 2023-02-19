@@ -1,5 +1,4 @@
 import React, { useEffect } from 'react';
-import { supabase } from '../lib/api';
 import {
   Flex,
   Heading,
@@ -17,15 +16,6 @@ import {
 import plateImage from '../assets/plate.png';
 
 const AuthPage = () => {
-  useEffect(() => {
-    async function fetchBackend() {
-      await fetch('/hi')
-        .then((res) => res.json())
-        .then(console.log);
-    }
-    fetchBackend();
-  }, []);
-
   return (
     <Flex direction="column" align="center" justify="center" h="100vh" p="32px">
       <Image src={plateImage} alt="Noodles" h="120px" mb="24px" />

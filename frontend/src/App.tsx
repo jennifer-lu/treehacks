@@ -9,7 +9,6 @@ import theme from './theme/theme';
 import AuthContext from './contexts/AuthContext';
 
 import { createClient } from '@supabase/supabase-js';
-import { supabase } from './lib/api';
 
 function App({ idToken }: any) {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(
